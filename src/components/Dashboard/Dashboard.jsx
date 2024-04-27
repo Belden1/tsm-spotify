@@ -12,7 +12,7 @@ import Library from '../../pages/Library';
 const Dashboard = ({ spotifyApi }) => {
   const [token, setToken] = useState(getAccessTokenFromStorage);
   const [spotifyHasToken, setSpotifyHasToken] = useState(false);
-  
+
   useEffect(() => {
     async function onMount() {
       await spotifyApi.setAccessToken(token);
@@ -26,13 +26,15 @@ const Dashboard = ({ spotifyApi }) => {
     <Box sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ flex: 1, overflowY: 'auto', display: 'flex' }}>
         {spotifyHasToken && (
+          <>
             <SideNav spotifyApi={spotifyApi} token={token} />
             <Routes>
               <Route path="/playlist/:id" element={<Playlist spotifyApi={spotifyApi} token={token} />} />
               <Route path="/library" element={<Library spotifyApi={spotifyApi} token={token} />} />
               <Route path="/" element={<Home />} />
             </Routes>
-          )}
+          </>
+        )}
       </Box>
       {token && spotifyHasToken && <Player spotifyApi={spotifyApi} token={token} />}
       <MobileNav />
